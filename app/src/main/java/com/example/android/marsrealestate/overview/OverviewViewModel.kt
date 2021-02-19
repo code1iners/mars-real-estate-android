@@ -40,14 +40,17 @@ class OverviewViewModel : ViewModel() {
 
     // The internal MutableLiveData String that stores the status of the most recent request
     private val _status = MutableLiveData<MarsApiStatus>()
-
-    // The external immutable LiveData for the request status String
     val status: LiveData<MarsApiStatus>
         get() = _status
 
-    val _properties = MutableLiveData<List<MarsProperty>>()
+    private val _properties = MutableLiveData<List<MarsProperty>>()
     val properties: LiveData<List<MarsProperty>>
         get() = _properties
+
+    // note. For navigate to Detail Fragment
+    private val _navigateToSelectedProperty = MutableLiveData<MarsProperty>()
+    val navigateToSelectedProperty: LiveData<MarsProperty>
+        get() = _navigateToSelectedProperty
 
     // note. Create coroutine job and a CoroutineScope using the main dispatcher
     private var viewModelJob = Job()
@@ -79,6 +82,15 @@ class OverviewViewModel : ViewModel() {
                 _properties.value = ArrayList()
             }
         }
+    }
+
+    // note. For navigate to Detail Fragment
+    fun displayPropertyDetails(marsProperty: MarsProperty) {
+        _navigateToSelectedProperty.value = marsProperty
+    }
+
+    fun displayPropertyDetailsComplete() {
+        _navigateToSelectedProperty.value = null
     }
 
     override fun onCleared() {
